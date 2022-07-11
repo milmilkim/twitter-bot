@@ -22,6 +22,6 @@ app.use('/', (req, res) => {
   res.send('hello world!');
 });
 
-app.listen(app.get('port'), () => {
+app.listen(process.env.PORT || 3000, () => {
   console.log('listen to ' + app.get('port'));
 });
