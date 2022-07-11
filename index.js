@@ -8,12 +8,12 @@ console.log(process.env.MONGODB_URL);
 
 const mongodbUrl = process.env.MONGODB_URL;
 
-try {
-  await mongoose.connect('mongodb://' + mongodbUrl);
-  console.log('mongodb 연결 완료');
-} catch (err) {
-  console.error(err);
-}
+// try {
+//   await mongoose.connect('mongodb://' + mongodbUrl);
+//   console.log('mongodb 연결 완료');
+// } catch (err) {
+//   console.error(err);
+// }
 
 const app = express();
 app.set('port', 3000);
