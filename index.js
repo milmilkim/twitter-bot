@@ -1,25 +1,33 @@
-import axios from 'axios';
 import dotenv from 'dotenv';
 import express from 'express';
 import mongoose from 'mongoose';
+import { book } from './models/book.js';
 
 dotenv.config();
-console.log(process.env.MONGODB_URL);
 
 const mongodbUrl = process.env.MONGODB_URL;
 
-try {
-  await mongoose.connect('mongodb://' + mongodbUrl);
-  console.log('mongodb 연결 완료');
-} catch (err) {
-  console.error(err);
-}
+(async () => {
+  try {
+    await mongoose.connect('mongodb+srv://' + mongodbUrl);
+    console.log('mongodb 연결 완료');
+  } catch (err) {
+    console.log('연결 실패');
+    console.error(err);
+  }
+})();
 
 const app = express();
 app.set('port', 3000);
 
-app.use('/', (req, res) => {
-  res.send('hello world!');
+app.use('/', async (req, res) => {
+  try {
+    const bookItem = await book.find();
+
+    res.send(bookItem);
+  } catch (err) {
+    res.status(500).send({ message: err.message });
+  }
 });
 
 app.listen(process.env.PORT || 3000, () => {

@@ -17,6 +17,7 @@ try {
       },
     }
   );
+  console.log(result.data);
 } catch (err) {
   console.error(err);
 }
