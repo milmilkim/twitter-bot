@@ -27,14 +27,12 @@ export const scrapNewBooks = async () => {
   const ridiUrl = 'https://ridibooks.com/new-releases/comic?type=total';
 
   const browser = await puppeteer.launch({
-    headless: true,
-    timeout: 60000,
+    args: ['--no-sandbox', '--disable-setuid-sandbox'],
   });
 
   try {
     // 새로운 페이지를 연다.
     const page = await browser.newPage();
-    page.setDefaultNavigationTimeout(60000);
 
     await page.goto('https://ridibooks.com/account/login', { waitUntil: ['networkidle0'] });
     await page.waitForTimeout(500);
