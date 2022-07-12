@@ -1,23 +1,16 @@
-import axios from 'axios';
-import dotenv from 'dotenv';
+/**
+ * 매일 실행되는 파일임
+ */
 
-dotenv.config();
-const OAuth = `OAuth oauth_consumer_key=${process.env.TWITTER_API_KEY},oauth_token=${process.env.TWITTER_ACCESS_TOKEN},oauth_signature_method="HMAC-SHA1",oauth_timestamp="1657553860",oauth_nonce=${process.env.OAUTH_NONCE},oauth_version="1.0",oauth_signature=${process.env.TWITTER_SIGNITURE}`;
-const now = new Date();
-/* 연동 테스트 */
-try {
-  const result = await axios.post(
-    'https://api.twitter.com/2/tweets',
-    {
-      text: 'Hello world!' + now,
-    },
-    {
-      headers: {
-        Authorization: OAuth,
-      },
-    }
-  );
-  console.log(result.data);
-} catch (err) {
-  console.error(err);
-}
+import { scrapNewBooks } from './scrap/Scraper.js';
+
+(async () => {
+  try {
+    await scrapNewBooks();
+  } catch (err) {
+    console.error(err);
+  } finally {
+    console.log('======프로그램 종료^0^=========');
+    return;
+  }
+})();

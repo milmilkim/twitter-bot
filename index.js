@@ -31,5 +31,5 @@ app.use('/', async (req, res) => {
 });
 
 app.listen(process.env.PORT || 3000, () => {
-  console.log('listen to ' + app.get('port'));
+  console.log(app.get('port') + '번 포트에서 대기중...');
 });
