@@ -59,7 +59,7 @@ export const scrapNewBooks = async () => {
         break;
       }
 
-      await page.goto(ridiUrl + '&page=' + pageNum, { waitUntil: ['networkidle0'] });
+      await page.goto(ridiUrl + '&page=' + pageNum, { waitUntil: 'networkidle2' });
 
       const bookList = await page.content();
       const $ = cheerio.load(bookList);
