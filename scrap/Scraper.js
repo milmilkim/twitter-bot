@@ -53,13 +53,16 @@ export const scrapNewBooks = async () => {
     await page.waitForTimeout(500);
     //기다리시오
 
+    console.log(ridiId);
+    console.log('로그인함');
+
     let pageNum = 1;
     while (true) {
       if (pageNum > 2) {
         break;
       }
 
-      await page.goto(ridiUrl + '&page=' + pageNum, { waitUntil: 'networkidle2' });
+      await page.goto(ridiUrl + '&page=' + pageNum);
 
       const bookList = await page.content();
       const $ = cheerio.load(bookList);
@@ -79,7 +82,7 @@ export const scrapNewBooks = async () => {
 
       for (let i = 0; i < urlList.length; i++) {
         //책 개별 데이터
-        await page.goto(urlList[i], { waitUntil: ['networkidle0'] });
+        await page.goto(urlList[i]);
         const book = await page.content();
 
         if (book === null) {
