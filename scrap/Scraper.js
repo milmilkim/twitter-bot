@@ -50,21 +50,12 @@ export const scrapNewBooks = async () => {
     await page.click('.login-button');
     //로그인 버튼 클릭
 
-    await page.waitForTimeout(500);
-    //기다리시오
-
     console.log(ridiId);
     console.log('로그인함');
 
     let pageNum = 1;
 
-    async function goto(page, link) {
-      return page.evaluate((link) => {
-        location.href = link;
-      }, link);
-    }
-
-    goto(page, `https://ridibooks.com/new-releases/comic?page${pageNum}`, { waitUntil: ['networkidle0'] });
+    await goto(`${ridiUrl}?page${pageNum}`, { waitUntil: ['networkidle0'] });
 
     const bookList = await page.content();
     const $ = cheerio.load(bookList);
