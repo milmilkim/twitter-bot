@@ -55,7 +55,7 @@ export const scrapNewBooks = async () => {
 
     let pageNum = 1;
 
-    await goto(`${ridiUrl}?page${pageNum}`, { waitUntil: ['networkidle0'] });
+    await page.goto(`${ridiUrl}?page${pageNum}`, { waitUntil: ['networkidle0'] });
 
     const bookList = await page.content();
     const $ = cheerio.load(bookList);
@@ -75,7 +75,7 @@ export const scrapNewBooks = async () => {
 
     for (let i = 0; i < urlList.length; i++) {
       //책 개별 데이터
-      console.log(`${page}페이지 ${i}번 책`);
+      console.log(`${pageNum}페이지 ${i}번 책`);
       await page.goto(urlList[i]);
       const book = await page.content();
 
