@@ -24,7 +24,7 @@ export const scrapNewBooks = async () => {
   const ridiId = process.env.RIDI_ID;
   const ridiPw = process.env.RIDI_PASSWORD;
 
-  const ridiUrl = 'https://ridibooks.com/new-releases/comic?type=total';
+  const ridiUrl = 'https://ridibooks.com/new-releases/comic';
 
   const browser = await puppeteer.launch({
     args: ['--no-sandbox', '--disable-setuid-sandbox'],
@@ -58,7 +58,13 @@ export const scrapNewBooks = async () => {
 
     let pageNum = 1;
 
-    await page.goto(ridiUrl + '&page=' + pageNum);
+    async function goto(page, link) {
+      return page.evaluate((link) => {
+        location.href = link;
+      }, link);
+    }
+
+    goto(page, `${ridiUrl}?page${pageNum}`);
 
     const bookList = await page.content();
     const $ = cheerio.load(bookList);
@@ -78,6 +84,7 @@ export const scrapNewBooks = async () => {
 
     for (let i = 0; i < urlList.length; i++) {
       //책 개별 데이터
+      console.log(`${page}페이지 ${i}번 책`);
       await page.goto(urlList[i]);
       const book = await page.content();
 
