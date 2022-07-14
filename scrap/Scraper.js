@@ -64,7 +64,7 @@ export const scrapNewBooks = async () => {
       }, link);
     }
 
-    goto(page, `${ridiUrl}?page${pageNum}`);
+    goto(page, `https://ridibooks.com/new-releases/comic?page${pageNum}`, { waitUntil: ['networkidle0'] });
 
     const bookList = await page.content();
     const $ = cheerio.load(bookList);
