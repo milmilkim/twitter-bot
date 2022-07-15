@@ -12,14 +12,16 @@ import imageToBase64 from './lib/ImageToBase64.js';
 
 dotenv.config();
 
-(async () => {
-  const listUrl = 'https://ridibooks.com/new-releases/comic';
+const autoTweet = async (listUrl, accountInfo) => {
   const books = await scraper(listUrl);
 
-  const bot = new Bot();
+  console.log(books);
+  const bot = new Bot(); //새 봇 객체 만들기
+
+  const { oauthToken, oauthSecret } = accountInfo;
   bot.init({
-    oauthToken: process.env.TWITTER_ACCESS_TOKEN,
-    oauthSecret: process.env.TTWITTER_ACEESS_TOKEN_SECRET,
+    oauthToken,
+    oauthSecret,
   });
 
   for (let i = 0; i < books.length; i++) {
@@ -39,11 +41,27 @@ dotenv.config();
         },
       });
 
-      console.log(tweet);
+      console.log(tweet.data);
     } catch (err) {
       console.error(err);
       continue;
     }
   }
-  console.log('프로그램 종료 ^-^');
+};
+
+//계정 1호
+const bot1 = {
+  oauthToken: process.env.TWITTER_ACCESS_TOKEN,
+  oauthSecret: process.env.TWITTER_ACCESS_TOKEN_SECRET,
+};
+
+//계정 2호
+const bot2 = {
+  oauthToken: process.env.TWITTER_ACCESS_TOKEN_B,
+  oauthSecret: process.env.TWITTER_ACCESS_TOKEN_SECRET_B,
+};
+
+(async () => {
+  await autoTweet(process.env.RIDI_URL_C, bot1);
+  await autoTweet(process.env.RIDI_URL_B, bot2);
 })();

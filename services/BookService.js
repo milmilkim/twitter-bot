@@ -55,3 +55,16 @@ export const countBooks = async () => {
     console.error(err);
   }
 };
+
+export const deleteBooks = async () => {
+  try {
+    await book.deleteMany({
+      createdAt: {
+        $lt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
+      },
+    });
+  } catch (err) {
+    console.error(err);
+  }
+};
+//7일전 책 다 지우기

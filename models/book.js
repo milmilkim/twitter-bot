@@ -9,7 +9,9 @@ const bookSchema = new mongoose.Schema(
     thumbnail: { type: String, required: false },
     url: { type: String, required: true },
   },
-  { timestamps: true }
+  {
+    timestamps: true,
+  }
 );
 
 const book = model('book', bookSchema);

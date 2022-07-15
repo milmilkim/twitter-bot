@@ -1,10 +1,14 @@
 import axios from 'axios';
 import cheerio from 'cheerio';
 
-import { getBookItem, addBook } from '../services/BookService.js';
+import { getBookItem, addBook, deleteBooks } from '../services/BookService.js';
 import { mongoDbConnect, mongoDbClose } from '../lib/MongoDConnect.js';
 const scraper = async (url) => {
   const savedJson = []; //저장 완료된 책 데이터를 넣을 배열
+
+  await mongoDbConnect(); //몽고 DB를 연결한다
+
+  await deleteBooks(); //7일 전 데이터 삭제
 
   for (let page = 1; page < 4; page++) {
     //중복 데이터가 발견되지 않더라도 최대 3페이지 까지만 확인한다
@@ -50,8 +54,6 @@ const scraper = async (url) => {
       pageJson.push(newBookItem); //한 페이지의 책 정보가 모두 배열에 저장되었다
     });
 
-    await mongoDbConnect(); //몽고 DB를 연결한다
-
     for (let i = 0; i < pageJson.length; i++) {
       const bookItem = pageJson[i];
       let duplicateBookItem = null;
@@ -69,6 +71,7 @@ const scraper = async (url) => {
 
         await addBook(bookItem); //db에 저장한다
         console.log(page + '페이지/' + (i + 1) + '번째 책 저장 완료');
+        console.log(bookItem);
         savedJson.push(bookItem); //db 저장에 성공한 책만 배열에 추가한다
       } catch (err) {
         console.error(err);
@@ -76,7 +79,6 @@ const scraper = async (url) => {
       }
     }
     //한 페이지 데이터를 모두 저장하고 다음 페이지로 넘어간다
-    page++;
   }
 
   await mongoDbClose();

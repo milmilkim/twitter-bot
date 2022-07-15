@@ -22,8 +22,7 @@ app.set('port', 3000);
 
 app.use('/', async (req, res) => {
   try {
-    const bookItem = await book.find();
-
+    const bookItem = await book.find().sort({ createdAt: -1 }).limit(5);
     res.send(bookItem);
   } catch (err) {
     res.status(500).send({ message: err.message });
