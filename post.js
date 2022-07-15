@@ -13,8 +13,8 @@ import imageToBase64 from './lib/ImageToBase64.js';
 dotenv.config();
 
 (async () => {
-  const url = 'https://ridibooks.com/new-releases/comic';
-  const books = await scraper(url);
+  const listUrl = 'https://ridibooks.com/new-releases/comic';
+  const books = await scraper(listUrl);
 
   const bot = new Bot();
   bot.init({
@@ -23,11 +23,13 @@ dotenv.config();
   });
 
   for (let i = 0; i < books.length; i++) {
-    const { thumbnail, title, author } = books[i];
+    const { thumbnail, title, author, url } = books[i];
     const encodedThumbnail = await imageToBase64(thumbnail);
     const res = await bot.uploadMedia(encodedThumbnail);
     const imageId = res.data.media_id_string;
     const text = generateTweetText(title, author, url);
+
+    console.log(text);
 
     try {
       const tweet = await bot.addTweet({
