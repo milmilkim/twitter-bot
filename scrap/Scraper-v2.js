@@ -63,11 +63,11 @@ const scraper = async (url) => {
 
         if (duplicateBookItem !== null) {
           console.log('중복 데이터입니다');
-          mongoDbClose();
+          await mongoDbClose();
           return savedJson; //지금까지 저장한 데이터를 리턴
         }
 
-        addBook(bookItem); //db에 저장한다
+        await addBook(bookItem); //db에 저장한다
         console.log(page + '페이지/' + (i + 1) + '번째 책 저장 완료');
         savedJson.push(bookItem); //db 저장에 성공한 책만 배열에 추가한다
       } catch (err) {
