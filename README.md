@@ -1,4 +1,4 @@
-# 만화 신간 알림 트위터봇
+# 서점 신간 알림 트위터봇
 
 - server: node.js, express
 - DB: mongodb
